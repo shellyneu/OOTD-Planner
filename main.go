@@ -129,22 +129,22 @@ func clearScreen() {
 
 func tampilkanPakaian() {
 	clearScreen()
-	fmt.Println("╔════════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║                         DAFTAR PAKAIAN ANDA                        ║")
-	fmt.Println("╠═════╦══════════════════╦═══════════╦═══════╦═══════════╦═══════════╣")
-	fmt.Println("║ No. ║ Nama             ║ Kategori  ║ Warna ║ Formalitas║ Terakhir  ║")
-	fmt.Println("╠═════╬══════════════════╬═══════════╬═══════╬═══════════╬═══════════╣")
+	fmt.Println("╔════════════════════════════════════════════════════════════════════════╗")
+	fmt.Println("║                         DAFTAR PAKAIAN ANDA                            ║")
+	fmt.Println("╠═════╦══════════════════╦═══════════╦════════╦═══════════╦══════════════╣")
+	fmt.Println("║ No. ║ Nama             ║ Kategori  ║ Warna  ║ Formalitas║ Terakhir     ║")
+	fmt.Println("╠═════╬══════════════════╬═══════════╬════════╬═══════════╬══════════════╣")
 
 	for i := 0; i < len(daftarPakaian); i++ {
 		p := daftarPakaian[i]
-		fmt.Printf("║ %-3d ║ %-16s ║ %-9s ║ %-5s ║ %-9d ║ %-9s ║\n",
+		fmt.Printf("║ %-3d ║ %-16s ║ %-9s ║ %-6s ║ %-9d ║ %-12s ║\n",
 			i+1, batasiPanjang(p.Nama, 16), p.Kategori, p.Warna, p.Formalitas, p.TerakhirDipakai.Format("02/01/06"))
 		if i < len(daftarPakaian)-1 {
-			fmt.Println("╟─────╫──────────────────╫───────────╫───────╫───────────╫───────────╢")
+			fmt.Println("╟─────╫──────────────────╫───────────╫────────╫───────────╫──────────────╢")
 		}
 	}
 
-	fmt.Println("╚═════╩══════════════════╩═══════════╩═══════╩═══════════╩═══════════╝")
+	fmt.Println("╚═════╩══════════════════╩═══════════╩════════╩═══════════╩══════════════╝")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	bufio.NewScanner(os.Stdin).Scan()
 }
@@ -309,58 +309,77 @@ func urutkanTanggal() {
 	fmt.Println("Data diurutkan berdasarkan tanggal terakhir dipakai (dari lama ke terbaru).")
 	tampilkanPakaian()
 }
-
 func tampilkanOutfit() {
 	clearScreen()
-	fmt.Println("╔════════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║                      KOMBINASI OOTD YANG TERSEDIA                  ║")
-	fmt.Println("╠═════╦════════════════════════╦════════════════╦════════════════════╣")
-	fmt.Println("║ No. ║ Nama Kombinasi         ║ Kategori Acara ║ Daftar Pakaian     ║")
-	fmt.Println("╠═════╬════════════════════════╬════════════════╬════════════════════╣")
+	fmt.Println("╔════════╦════════════════════════════════════════════╦════════════════════════════╦════════════════════════════════════════════════════════════════════════════════════╗")
+	fmt.Println("║   No.  ║ Nama Kombinasi                             ║ Kategori Acara             ║ Daftar Pakaian                                                                     ║")
+	fmt.Println("╠════════╬════════════════════════════════════════════╬════════════════════════════╬════════════════════════════════════════════════════════════════════════════════════╣")
 
 	for i := 0; i < len(daftarOutfit); i++ {
 		o := daftarOutfit[i]
-		fmt.Printf("║ %-3d ║ %-22s ║ %-14s ║ %-18s ║\n",
-			i+1, batasiPanjang(o.Nama, 22), batasiPanjang(o.KategoriAcara, 14), strings.Join(o.DaftarPakaian, ", "))
+		fmt.Printf("║ %-6d ║ %-42s ║ %-26s ║ %-80s ║\n",
+			i+1,
+			batasiPanjang(o.Nama, 42),
+			batasiPanjang(o.KategoriAcara, 26),
+			batasiPanjang(strings.Join(o.DaftarPakaian, ", "), 80),
+		)
+
 		if i < len(daftarOutfit)-1 {
-			fmt.Println("╟─────╫────────────────────────╫────────────────╫────────────────────╢")
+			fmt.Println("╟────────╫────────────────────────────────────────────╫────────────────────────────╫────────────────────────────────────────────────────────────────────────────────────╢")
 		}
 	}
 
-	fmt.Println("╚═════╩════════════════════════╩════════════════╩════════════════════╝")
+	fmt.Println("╚════════╩════════════════════════════════════════════╩════════════════════════════╩════════════════════════════════════════════════════════════════════════════════════╝")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
+func batasPanjang(teks string, max int) string {
+	if len(teks) > max {
+		return teks[:max-3] + "..."
+	}
+	return teks
+}
+
 func rekomendasiCuaca(scanner *bufio.Scanner) {
 	clearScreen()
-	fmt.Println("╔════════════════════════════════╗")
-	fmt.Println("║     REKOMENDASI BERDASARKAN    ║")
-	fmt.Println("║            CUACA               ║")
-	fmt.Println("╚════════════════════════════════╝")
+	fmt.Println("╔════════════════════════════════════════╗")
+	fmt.Println("║        REKOMENDASI BERDASARKAN         ║")
+	fmt.Println("║               CUACA                    ║")
+	fmt.Println("╚════════════════════════════════════════╝")
 	fmt.Print("\n➤ Masukkan kondisi cuaca (cerah/hujan/dingin): ")
 	scanner.Scan()
 	kondisi := strings.ToLower(scanner.Text())
 
-	fmt.Println("\n┌──────────────────────────────────────────────────────────────────┐")
-	fmt.Println("│                      HASIL REKOMENDASI                           │")
-	fmt.Println("├──────────────────────────────────────────────────────────────────┤")
+	fmt.Println("┌───────────────────────────────┬──────────────────────────────────────────────────┐")
+	fmt.Println("│        Nama Kombinasi         │                 Daftar Pakaian                   │")
+	fmt.Println("├───────────────────────────────┼──────────────────────────────────────────────────┤")
 
 	found := false
 	for i := 0; i < len(daftarOutfit); i++ {
 		o := daftarOutfit[i]
+
 		if strings.Contains(strings.ToLower(o.KategoriAcara), kondisi) {
-			fmt.Printf("│ ➤ %-30s │ %-30s │\n", o.Nama, strings.Join(o.DaftarPakaian, ", "))
-			fmt.Println("├──────────────────────────────────────────────────────────────────┤")
+			nama := o.Nama
+			if len(nama) > 30 {
+				nama = nama[:27] + "..."
+			}
+
+			pakaian := strings.Join(o.DaftarPakaian, ", ")
+			if len(pakaian) > 52 {
+				pakaian = pakaian[:49] + "..."
+			}
+
+			fmt.Printf("│ %-30s │ %-52s │\n", nama, pakaian)
 			found = true
 		}
 	}
 
 	if !found {
-		fmt.Println("│       Tidak ada outfit yang sesuai dengan cuaca tersebut        │")
-		fmt.Println("├──────────────────────────────────────────────────────────────────┤")
+		fmt.Println("│ Tidak ada outfit yang sesuai dengan cuaca tersebut                             │")
 	}
-	fmt.Println("└──────────────────────────────────────────────────────────────────┘")
+
+	fmt.Println("└────────────────────────────────┴───────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
 }
