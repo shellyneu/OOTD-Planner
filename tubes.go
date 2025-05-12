@@ -120,7 +120,9 @@ func dataDummy() {
 
 func tampilkanPakaian() {
 	fmt.Println("\nDaftar Pakaian:")
-	for i, p := range daftarPakaian {
+
+	for i := 0; i < len(daftarPakaian); i++ {
+		p := daftarPakaian[i]
 		fmt.Printf("%d. %s | %s | %s | Formalitas: %d | Terakhir dipakai: %s\n",
 			i+1, p.Nama, p.Kategori, p.Warna, p.Formalitas, p.TerakhirDipakai.Format("2006-01-02"))
 	}
@@ -256,7 +258,8 @@ func urutkanTanggal() {
 
 func tampilkanOutfit() {
 	fmt.Println("\nKombinasi OOTD:")
-	for i, o := range daftarOutfit {
+	for i := 0; i < len(daftarOutfit); i++ {
+		o := daftarOutfit[i]
 		fmt.Printf("%d. %s | Acara: %s | Pakaian: %s\n",
 			i+1, o.Nama, o.KategoriAcara, strings.Join(o.DaftarPakaian, ", "))
 	}
@@ -269,7 +272,8 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 
 	fmt.Println("Rekomendasi Outfit:")
 	found := false
-	for _, o := range daftarOutfit {
+	for i := 0; i < len(daftarOutfit); i++ {
+		o := daftarOutfit[i]
 		if strings.Contains(strings.ToLower(o.KategoriAcara), kondisi) {
 			fmt.Printf("- %s | Pakaian: %s\n", o.Nama, strings.Join(o.DaftarPakaian, ", "))
 			found = true
