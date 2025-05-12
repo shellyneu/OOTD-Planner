@@ -33,19 +33,19 @@ func main() {
 	for {
 		clearScreen()
 		fmt.Println("╔════════════════════════════════╗")
-		fmt.Println("║        OOTD PLANNER v1.0       ║")
+		fmt.Println("║          OOTD PLANNER          ║")
 		fmt.Println("╚════════════════════════════════╝")
-		fmt.Println("┌────────────────────────────────┐")
-		fmt.Println("│ 1. Tampilkan Semua Pakaian     │")
-		fmt.Println("│ 2. Tambah Pakaian Baru         │")
-		fmt.Println("│ 3. Edit Data Pakaian           │")
-		fmt.Println("│ 4. Hapus Pakaian               │")
-		fmt.Println("│ 5. Cari Pakaian (Binary Search)│")
-		fmt.Println("│ 6. Urutkan Berdasarkan Tanggal │")
-		fmt.Println("│ 7. Lihat Kombinasi OOTD        │")
+		fmt.Println("┌─────────────────────────────────┐")
+		fmt.Println("│ 1. Tampilkan Semua Pakaian      │")
+		fmt.Println("│ 2. Tambah Pakaian Baru          │")
+		fmt.Println("│ 3. Edit Data Pakaian            │")
+		fmt.Println("│ 4. Hapus Pakaian                │")
+		fmt.Println("│ 5. Cari Pakaian (Binary Search) │")
+		fmt.Println("│ 6. Urutkan Berdasarkan Tanggal  │")
+		fmt.Println("│ 7. Lihat Kombinasi OOTD         │")
 		fmt.Println("│ 8. Rekomendasi Berdasarkan Cuaca│")
-		fmt.Println("│ 0. Keluar                      │")
-		fmt.Println("└────────────────────────────────┘")
+		fmt.Println("│ 0. Keluar                       │")
+		fmt.Println("└─────────────────────────────────┘")
 		fmt.Print("➤ Pilih menu: ")
 		scanner.Scan()
 		pilihan := scanner.Text()
@@ -90,13 +90,13 @@ func dataDummy() {
 		{"Setelan Jas", "Formal", "Hitam", 10, parseTanggal("2025-02-10", layout)},
 		{"Celana Chino", "Casual", "Beige", 6, parseTanggal("2025-03-30", layout)},
 		{"Celana Jeans", "Casual", "Biru", 4, parseTanggal("2025-04-20", layout)},
-		{"Sweater Abu", "Casual", "Abu-abu", 7, parseTanggal("2025-03-05", layout)},
+		{"Sweater Abu", "Casual", "Abu", 7, parseTanggal("2025-03-05", layout)},
 		{"Mantel Hitam", "Formal", "Hitam", 9, parseTanggal("2025-01-15", layout)},
 		{"Hoodie Merah", "Sporty", "Merah", 4, parseTanggal("2025-04-10", layout)},
 		{"Kaos Lengan Panjang", "Casual", "Putih", 5, parseTanggal("2025-04-18", layout)},
 		{"Jaket Waterproof", "Sporty", "Biru", 6, parseTanggal("2025-03-27", layout)},
 		{"Rompi Rajut", "Casual", "Coklat", 6, parseTanggal("2025-03-15", layout)},
-		{"Blazer Abu", "Formal", "Abu-abu", 8, parseTanggal("2025-02-22", layout)},
+		{"Blazer Abu", "Formal", "Abu", 8, parseTanggal("2025-02-22", layout)},
 	}
 
 	daftarOutfit = []Outfit{
@@ -145,7 +145,7 @@ func tampilkanPakaian() {
 	}
 
 	fmt.Println("╚═════╩══════════════════╩═══════════╩═══════╩═══════════╩═══════════╝")
-	fmt.Println("\nTekan enter untuk kembali...")
+	fmt.Println("\nTekan enter untuk selanjutnya...")
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
@@ -187,9 +187,10 @@ func tambahPakaian(scanner *bufio.Scanner) {
 	daftarPakaian = append(daftarPakaian, p)
 
 	fmt.Println("\n┌────────────────────────────────┐")
-	fmt.Println("│   Pakaian berhasil ditambahkan! │")
+	fmt.Println("│  Pakaian berhasil ditambahkan! │")
 	fmt.Println("└────────────────────────────────┘")
-	time.Sleep(1 * time.Second)
+	fmt.Println("\nTekan enter untuk selanjutnya...")
+	bufio.NewScanner(os.Stdin).Scan()
 }
 
 func editPakaian(scanner *bufio.Scanner) {
@@ -206,26 +207,30 @@ func editPakaian(scanner *bufio.Scanner) {
 
 	layout := "2006-01-02"
 
-	fmt.Print("Nama baru: ")
+	fmt.Print("➤ Nama Baru: ")
 	scanner.Scan()
 	daftarPakaian[index].Nama = scanner.Text()
 
-	fmt.Print("Kategori baru: ")
+	fmt.Print("➤ Kategori baru: ")
 	scanner.Scan()
 	daftarPakaian[index].Kategori = scanner.Text()
 
-	fmt.Print("Warna baru: ")
+	fmt.Print("➤ Warna baru: ")
 	scanner.Scan()
 	daftarPakaian[index].Warna = scanner.Text()
 
-	fmt.Print("Formalitas baru (1-10): ")
+	fmt.Print("➤ Formalitas baru (1-10): ")
 	fmt.Scanln(&daftarPakaian[index].Formalitas)
 
-	fmt.Print("Tanggal terakhir dipakai baru (YYYY-MM-DD): ")
+	fmt.Print("➤ Tanggal terakhir dipakai (YYYY-MM-DD): ")
 	scanner.Scan()
 	daftarPakaian[index].TerakhirDipakai = parseTanggal(scanner.Text(), layout)
 
-	fmt.Println("Data pakaian berhasil diubah.")
+	fmt.Println("\n┌────────────────────────────────┐")
+	fmt.Println("│    Pakaian berhasil diedit!    │")
+	fmt.Println("└────────────────────────────────┘")
+	fmt.Println("\nTekan enter untuk selanjutnya...")
+	bufio.NewScanner(os.Stdin).Scan()
 }
 
 func hapusPakaian() {
@@ -237,11 +242,15 @@ func hapusPakaian() {
 
 	if index < 0 || index >= len(daftarPakaian) {
 		fmt.Println("Nomor tidak valid.")
+		fmt.Println("\nTekan enter untuk selanjutnya...")
+		bufio.NewScanner(os.Stdin).Scan()
 		return
 	}
 
 	daftarPakaian = append(daftarPakaian[:index], daftarPakaian[index+1:]...)
 	fmt.Println("Data pakaian berhasil dihapus.")
+	fmt.Println("\nTekan enter untuk selanjutnya...")
+	bufio.NewScanner(os.Stdin).Scan()
 }
 
 func cariBinary(scanner *bufio.Scanner) {
@@ -262,11 +271,16 @@ func cariBinary(scanner *bufio.Scanner) {
 		namaMid := strings.ToLower(daftarPakaian[mid].Nama)
 
 		if namaMid == cari {
-			fmt.Printf("Ditemukan: %s | %s | %s | %d | %s\n",
-				daftarPakaian[mid].Nama, daftarPakaian[mid].Kategori,
-				daftarPakaian[mid].Warna, daftarPakaian[mid].Formalitas,
-				daftarPakaian[mid].TerakhirDipakai.Format("2006-01-02"))
+			fmt.Println("Pakaian ditemukan:")
+			fmt.Println("╔═════╦══════════════════╦═══════════╦═══════╦═══════════╦════════════╗")
+			fmt.Printf("║ %-3d ║ %-16s ║ %-9s ║ %-5s ║ %-9d ║ %-9s ║\n",
+				mid+1, batasiPanjang(daftarPakaian[mid].Nama, 16),
+				daftarPakaian[mid].Kategori, daftarPakaian[mid].Warna,
+				daftarPakaian[mid].Formalitas, daftarPakaian[mid].TerakhirDipakai.Format("2006-01-02"))
+			fmt.Println("╚═════╩══════════════════╩═══════════╩═══════╩═══════════╩════════════╝")
 			found = true
+			fmt.Println("\nTekan enter untuk selanjutnya...")
+			bufio.NewScanner(os.Stdin).Scan()
 			break
 		} else if namaMid < cari {
 			low = mid + 1
@@ -277,6 +291,8 @@ func cariBinary(scanner *bufio.Scanner) {
 
 	if !found {
 		fmt.Println("Pakaian tidak ditemukan.")
+		fmt.Println("\nTekan enter untuk selanjutnya...")
+		bufio.NewScanner(os.Stdin).Scan()
 	}
 }
 
@@ -291,6 +307,7 @@ func urutkanTanggal() {
 		daftarPakaian[j+1] = key
 	}
 	fmt.Println("Data diurutkan berdasarkan tanggal terakhir dipakai (dari lama ke terbaru).")
+	tampilkanPakaian()
 }
 
 func tampilkanOutfit() {
@@ -304,7 +321,7 @@ func tampilkanOutfit() {
 	for i := 0; i < len(daftarOutfit); i++ {
 		o := daftarOutfit[i]
 		fmt.Printf("║ %-3d ║ %-22s ║ %-14s ║ %-18s ║\n",
-			i+1, batasiPanjang(o.Nama, 22), batasiPanjang(o.KategoriAcara, 14), batasiPanjang(strings.Join(o.DaftarPakaian, ", "), 18))
+			i+1, batasiPanjang(o.Nama, 22), batasiPanjang(o.KategoriAcara, 14), strings.Join(o.DaftarPakaian, ", "))
 		if i < len(daftarOutfit)-1 {
 			fmt.Println("╟─────╫────────────────────────╫────────────────╫────────────────────╢")
 		}
