@@ -317,11 +317,11 @@ func tampilkanOutfit() {
 
 	for i := 0; i < len(daftarOutfit); i++ {
 		o := daftarOutfit[i]
-		fmt.Printf("║ %-6d ║ %-42s ║ %-26s ║ %-80s ║\n",
+		fmt.Printf("║ %-6d ║ %-42s ║ %-26s ║ %-82s ║\n",
 			i+1,
 			batasiPanjang(o.Nama, 42),
 			batasiPanjang(o.KategoriAcara, 26),
-			batasiPanjang(strings.Join(o.DaftarPakaian, ", "), 80),
+			batasiPanjang(strings.Join(o.DaftarPakaian, ", "), 82),
 		)
 
 		if i < len(daftarOutfit)-1 {
@@ -362,15 +362,15 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 		if strings.Contains(strings.ToLower(o.KategoriAcara), kondisi) {
 			nama := o.Nama
 			if len(nama) > 30 {
-				nama = nama[:27] + "..."
+				nama = nama[:29] + "..."
 			}
 
 			pakaian := strings.Join(o.DaftarPakaian, ", ")
 			if len(pakaian) > 52 {
-				pakaian = pakaian[:49] + "..."
+				pakaian = pakaian[:48] + "..."
 			}
 
-			fmt.Printf("│ %-30s │ %-52s │\n", nama, pakaian)
+			fmt.Printf("│ %-29s │ %-48s │\n", nama, pakaian)
 			found = true
 		}
 	}
@@ -379,7 +379,7 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 		fmt.Println("│ Tidak ada outfit yang sesuai dengan cuaca tersebut                             │")
 	}
 
-	fmt.Println("└────────────────────────────────┴───────────────────────────────────────────────────┘")
+	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
 }
