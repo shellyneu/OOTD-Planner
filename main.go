@@ -40,10 +40,11 @@ func main() {
 		fmt.Println("│ 2. Tambah Pakaian Baru          │")
 		fmt.Println("│ 3. Edit Data Pakaian            │")
 		fmt.Println("│ 4. Hapus Pakaian                │")
-		fmt.Println("│ 5. Cari Pakaian (Binary Search) │")
-		fmt.Println("│ 6. Urutkan Berdasarkan Tanggal  │")
-		fmt.Println("│ 7. Lihat Kombinasi OOTD         │")
-		fmt.Println("│ 8. Rekomendasi Berdasarkan Cuaca│")
+		fmt.Println("│ 5. Tambah kombinasi OOTD        │")
+		fmt.Println("│ 6. Cari Pakaian (Binary Search) │")
+		fmt.Println("│ 7. Urutkan Berdasarkan Tanggal  │")
+		fmt.Println("│ 8. Lihat Kombinasi OOTD         │")
+		fmt.Println("│ 9. Rekomendasi Berdasarkan Cuaca│")
 		fmt.Println("│ 0. Keluar                       │")
 		fmt.Println("└─────────────────────────────────┘")
 		fmt.Print("➤ Pilih menu: ")
@@ -60,12 +61,14 @@ func main() {
 		case "4":
 			hapusPakaian()
 		case "5":
-			cariBinary(scanner)
+			tambahOutfit(scanner)
 		case "6":
-			urutkanTanggal()
+			cariBinary(scanner)
 		case "7":
-			tampilkanOutfit()
+			urutkanTanggal()
 		case "8":
+			tampilkanOutfit()
+		case "9":
 			rekomendasiCuaca(scanner)
 		case "0":
 			fmt.Println("Keluar dari program.")
@@ -251,6 +254,65 @@ func hapusPakaian() {
 	fmt.Println("Data pakaian berhasil dihapus.")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	bufio.NewScanner(os.Stdin).Scan()
+}
+
+func tambahOutfit(scanner *bufio.Scanner) {
+	clearScreen()
+	fmt.Println("╔════════════════════════════════╗")
+	fmt.Println("║      TAMBAH KOMBINASI OOTD     ║")
+	fmt.Println("╚════════════════════════════════╝")
+
+	var outfit Outfit
+
+	fmt.Print("➤ Nama kombinasi: ")
+	scanner.Scan()
+	outfit.Nama = scanner.Text()
+
+	fmt.Print("➤ Kategori acara: ")
+	scanner.Scan()
+	outfit.KategoriAcara = scanner.Text()
+
+	fmt.Println("Masukkan nama-nama pakaian yang ingin ditambahkan ke kombinasi (pisahkan dengan koma):")
+	scanner.Scan()
+	masukan := scanner.Text()
+	namaPakaian := strings.Split(masukan, ",")
+
+	valid := true
+	var daftar []string
+	for i := 0; i < len(namaPakaian); i++ {
+		nama := strings.TrimSpace(namaPakaian[i])
+		if cekNamaPakaian(nama) {
+			daftar = append(daftar, nama)
+		} else {
+			fmt.Printf("Pakaian dengan nama \"%s\" tidak ditemukan.\n", nama)
+			valid = false
+		}
+	}
+
+	if !valid {
+		fmt.Println("Gagal menambahkan kombinasi karena ada nama pakaian yang tidak valid.")
+		fmt.Println("\nTekan enter untuk kembali...")
+		bufio.NewScanner(os.Stdin).Scan()
+		return
+	}
+
+	outfit.DaftarPakaian = daftar
+	daftarOutfit = append(daftarOutfit, outfit)
+
+	fmt.Println("\n┌────────────────────────────────┐")
+	fmt.Println("│   Outfit berhasil ditambah!    │")
+	fmt.Println("└────────────────────────────────┘")
+	fmt.Println("\nTekan enter untuk selanjutnya...")
+	bufio.NewScanner(os.Stdin).Scan()
+}
+
+func cekNamaPakaian(nama string) bool {
+	for i := 0; i < len(daftarPakaian); i++ {
+		if strings.EqualFold(daftarPakaian[i].Nama, nama) {
+			return true
+		}
+	}
+	return false
 }
 
 func cariBinary(scanner *bufio.Scanner) {
