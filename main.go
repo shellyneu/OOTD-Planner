@@ -334,13 +334,6 @@ func tampilkanOutfit() {
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
-func batasPanjang(teks string, max int) string {
-	if len(teks) > max {
-		return teks[:max-3] + "..."
-	}
-	return teks
-}
-
 func rekomendasiCuaca(scanner *bufio.Scanner) {
 	clearScreen()
 	fmt.Println("╔════════════════════════════════════════╗")
