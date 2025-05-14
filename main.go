@@ -334,12 +334,12 @@ func cariBinary(scanner *bufio.Scanner) {
 
 		if namaMid == cari {
 			fmt.Println("Pakaian ditemukan:")
-			fmt.Println("╔═════╦══════════════════╦═══════════╦═══════╦═══════════╦════════════╗")
-			fmt.Printf("║ %-3d ║ %-16s ║ %-9s ║ %-5s ║ %-9d ║ %-9s ║\n",
+			fmt.Println("╔═════╦══════════════════╦═══════════╦════════╦═══════════╦══════════════╗")
+			fmt.Printf("║ %-3d ║ %-16s ║ %-9s ║ %-6s ║ %-9d ║ %-12s ║\n",
 				mid+1, batasiPanjang(daftarPakaian[mid].Nama, 16),
 				daftarPakaian[mid].Kategori, daftarPakaian[mid].Warna,
 				daftarPakaian[mid].Formalitas, daftarPakaian[mid].TerakhirDipakai.Format("2006-01-02"))
-			fmt.Println("╚═════╩══════════════════╩═══════════╩═══════╩═══════════╩════════════╝")
+			fmt.Println("╚═════╩══════════════════╩═══════════╩════════╩═══════════╩══════════════╝")
 			found = true
 			fmt.Println("\nTekan enter untuk selanjutnya...")
 			bufio.NewScanner(os.Stdin).Scan()
