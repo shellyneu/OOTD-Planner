@@ -67,7 +67,7 @@ func main() {
 		case "7":
 			urutkanTanggal()
 		case "8":
-			urutkanOutfitFormalitas()
+			urutkanFormalitas()
 		case "9":
 			tampilkanOutfit()
 		case "10":
@@ -207,7 +207,7 @@ func editPakaian(scanner *bufio.Scanner) {
 	// Sequential search
 	idx := -1
 	for i := 0; i < len(daftarPakaian); i++ {
-		if strings.EqualFold(daftarPakaian[i].Nama, namaCari) {
+		if daftarPakaian[i].Nama == namaCari {
 			idx = i
 			break
 		}
@@ -347,7 +347,7 @@ func tambahOutfit(scanner *bufio.Scanner) {
 func cekNamaPakaian(nama string) bool {
 	//Sequential Search
 	for i := 0; i < len(daftarPakaian); i++ {
-		if strings.EqualFold(daftarPakaian[i].Nama, nama) {
+		if daftarPakaian[i].Nama == nama {
 			return true
 		}
 	}
@@ -422,6 +422,26 @@ func urutkanTanggal() {
 	fmt.Println("Data diurutkan berdasarkan tanggal terakhir dipakai (dari lama ke terbaru).")
 	tampilkanPakaian()
 }
+
+func urutkanFormalitas() {
+	//Selection Sort
+	n := len(daftarPakaian)
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < n; j++ {
+			if daftarPakaian[j].Formalitas > daftarPakaian[maxIdx].Formalitas {
+				maxIdx = j
+			}
+		}
+		// Tukar nilai formalitas
+		daftarPakaian[i].Formalitas, daftarPakaian[maxIdx].Formalitas = daftarPakaian[maxIdx].Formalitas, daftarPakaian[i].Formalitas
+		// Tukar outfit juga agar sesuai urutan
+		daftarOutfit[i], daftarOutfit[maxIdx] = daftarOutfit[maxIdx], daftarOutfit[i]
+	}
+	fmt.Println("Data diurutkan berdasarkan formalitas (dari tetringgi ke terendah).")
+	tampilkanPakaian()
+}
+
 func tampilkanOutfit() {
 	clearScreen()
 	fmt.Println("╔════════╦════════════════════════════════════════════╦════════════════════════════╦════════════════════════════════════════════════════════════════════════════════════╗")
@@ -488,47 +508,4 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
-}
-
-func urutkanOutfitFormalitas() {
-	clearScreen()
-	fmt.Println("╔════════════════════════════════════════════════════════════════════════════╗")
-	fmt.Println("║         URUTAN OUTFIT BERDASARKAN FORMALITAS (SELECTION SORT)              ║")
-	fmt.Println("╚════════════════════════════════════════════════════════════════════════════╝")
-
-	n := len(daftarOutfit)
-	formalitasOutfit := make([]float64, n)
-	for i, o := range daftarOutfit {
-		total := 0
-		count := 0
-		for _, nama := range o.DaftarPakaian {
-			for _, p := range daftarPakaian {
-				if strings.EqualFold(p.Nama, nama) {
-					total += p.Formalitas
-					count++
-					break
-				}
-			}
-		}
-		if count > 0 {
-			formalitasOutfit[i] = float64(total) / float64(count)
-		} else {
-			formalitasOutfit[i] = 0
-		}
-	}
-	// Selection sort dari formalitas tertinggi ke terendah
-	for i := 0; i < n-1; i++ {
-		maxIdx := i
-		for j := i + 1; j < n; j++ {
-			if formalitasOutfit[j] > formalitasOutfit[maxIdx] {
-				maxIdx = j
-			}
-		}
-		if maxIdx != i {
-			daftarOutfit[i], daftarOutfit[maxIdx] = daftarOutfit[maxIdx], daftarOutfit[i]
-			formalitasOutfit[i], formalitasOutfit[maxIdx] = formalitasOutfit[maxIdx], formalitasOutfit[i]
-		}
-	}
-	fmt.Println("Daftar outfit berhasil diurutkan berdasarkan formalitas (tinggi ke rendah).")
-	tampilkanOutfit()
 }
