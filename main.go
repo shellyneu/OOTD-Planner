@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strings"
 	"time"
 )
@@ -35,18 +34,19 @@ func main() {
 		fmt.Println("╔════════════════════════════════╗")
 		fmt.Println("║          OOTD PLANNER          ║")
 		fmt.Println("╚════════════════════════════════╝")
-		fmt.Println("┌─────────────────────────────────┐")
-		fmt.Println("│ 1. Tampilkan Semua Pakaian      │")
-		fmt.Println("│ 2. Tambah Pakaian Baru          │")
-		fmt.Println("│ 3. Edit Data Pakaian            │")
-		fmt.Println("│ 4. Hapus Pakaian                │")
-		fmt.Println("│ 5. Tambah kombinasi OOTD        │")
-		fmt.Println("│ 6. Cari Pakaian (Binary Search) │")
-		fmt.Println("│ 7. Urutkan Berdasarkan Tanggal  │")
-		fmt.Println("│ 8. Lihat Kombinasi OOTD         │")
-		fmt.Println("│ 9. Rekomendasi Berdasarkan Cuaca│")
-		fmt.Println("│ 0. Keluar                       │")
-		fmt.Println("└─────────────────────────────────┘")
+		fmt.Println("┌────────────────────────────────────┐")
+		fmt.Println("│ 1. Tampilkan Semua Pakaian         │")
+		fmt.Println("│ 2. Tambah Pakaian Baru             │")
+		fmt.Println("│ 3. Edit Data Pakaian               │")
+		fmt.Println("│ 4. Hapus Pakaian                   │")
+		fmt.Println("│ 5. Tambah kombinasi OOTD           │")
+		fmt.Println("│ 6. Cari Pakaian                    │")
+		fmt.Println("│ 7. Urutkan Berdasarkan Tanggal     │")
+		fmt.Println("│ 8. Urutkan Berdasarkan Formalitas  │")
+		fmt.Println("│ 9. Lihat Kombinasi OOTD            │")
+		fmt.Println("│ 10. Rekomendasi Berdasarkan Cuaca  │")
+		fmt.Println("│ 0. Keluar                          │")
+		fmt.Println("└────────────────────────────────────┘")
 		fmt.Print("➤ Pilih menu: ")
 		scanner.Scan()
 		pilihan := scanner.Text()
@@ -59,16 +59,18 @@ func main() {
 		case "3":
 			editPakaian(scanner)
 		case "4":
-			hapusPakaian()
+			hapusPakaian(scanner)
 		case "5":
 			tambahOutfit(scanner)
 		case "6":
-			cariBinary(scanner)
+			cariPakaian(scanner)
 		case "7":
 			urutkanTanggal()
 		case "8":
-			tampilkanOutfit()
+			urutkanOutfitFormalitas()
 		case "9":
+			tampilkanOutfit()
+		case "10":
 			rekomendasiCuaca(scanner)
 		case "0":
 			fmt.Println("Keluar dari program.")
@@ -111,7 +113,7 @@ func dataDummy() {
 		{"Work From Cafe", "cuaca cerah", []string{"Rompi Rajut", "Kaos Lengan Panjang", "Celana Chino"}},
 		{"Kantor Santai", "meeting formal", []string{"Blazer Abu", "Kaos Lengan Panjang", "Celana Chino"}},
 		{"Jalan Saat Hujan", "cuaca hujan", []string{"Mantel Hitam", "Kaos Hitam", "Celana Jeans"}},
-		{"Kencan Dingin", "cuaca dingin", []string{"Sweater Abu", "Rompi Rajut", "Celana Jeans"}},
+		{"Kencan Dingin", "cuaca ding`in", []string{"Sweater Abu", "Rompi Rajut", "Celana Jeans"}},
 		{"Santai Cerah", "cuaca cerah", []string{"Kaos Hitam", "Celana Chino"}},
 		{"Weekend Sporty", "cuaca cerah", []string{"Hoodie Merah", "Celana Chino"}},
 		{"Rainy Day Cozy", "cuaca hujan", []string{"Sweater Abu", "Jaket Waterproof"}},
@@ -198,13 +200,23 @@ func tambahPakaian(scanner *bufio.Scanner) {
 
 func editPakaian(scanner *bufio.Scanner) {
 	tampilkanPakaian()
-	fmt.Print("Masukkan nomor pakaian yang ingin diedit: ")
-	var index int
-	fmt.Scanln(&index)
-	index--
+	fmt.Print("Masukkan nama pakaian yang ingin diedit: ")
+	scanner.Scan()
+	namaCari := scanner.Text()
 
-	if index < 0 || index >= len(daftarPakaian) {
-		fmt.Println("Nomor tidak valid.")
+	// Sequential search
+	idx := -1
+	for i := 0; i < len(daftarPakaian); i++ {
+		if strings.EqualFold(daftarPakaian[i].Nama, namaCari) {
+			idx = i
+			break
+		}
+	}
+
+	if idx == -1 {
+		fmt.Println("Pakaian tidak ditemukan.")
+		fmt.Println("\nTekan enter untuk selanjutnya...")
+		bufio.NewScanner(os.Stdin).Scan()
 		return
 	}
 
@@ -212,22 +224,22 @@ func editPakaian(scanner *bufio.Scanner) {
 
 	fmt.Print("➤ Nama Baru: ")
 	scanner.Scan()
-	daftarPakaian[index].Nama = scanner.Text()
+	daftarPakaian[idx].Nama = scanner.Text()
 
 	fmt.Print("➤ Kategori baru: ")
 	scanner.Scan()
-	daftarPakaian[index].Kategori = scanner.Text()
+	daftarPakaian[idx].Kategori = scanner.Text()
 
 	fmt.Print("➤ Warna baru: ")
 	scanner.Scan()
-	daftarPakaian[index].Warna = scanner.Text()
+	daftarPakaian[idx].Warna = scanner.Text()
 
 	fmt.Print("➤ Formalitas baru (1-10): ")
-	fmt.Scanln(&daftarPakaian[index].Formalitas)
+	fmt.Scanln(&daftarPakaian[idx].Formalitas)
 
 	fmt.Print("➤ Tanggal terakhir dipakai (YYYY-MM-DD): ")
 	scanner.Scan()
-	daftarPakaian[index].TerakhirDipakai = parseTanggal(scanner.Text(), layout)
+	daftarPakaian[idx].TerakhirDipakai = parseTanggal(scanner.Text(), layout)
 
 	fmt.Println("\n┌────────────────────────────────┐")
 	fmt.Println("│    Pakaian berhasil diedit!    │")
@@ -236,21 +248,47 @@ func editPakaian(scanner *bufio.Scanner) {
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
-func hapusPakaian() {
+func hapusPakaian(scanner *bufio.Scanner) {
 	tampilkanPakaian()
-	fmt.Print("Masukkan nomor pakaian yang ingin dihapus: ")
-	var index int
-	fmt.Scanln(&index)
-	index--
+	fmt.Print("Masukkan nama pakaian yang ingin dihapus: ")
+	scanner.Scan()
+	namaCari := strings.ToLower(scanner.Text())
 
-	if index < 0 || index >= len(daftarPakaian) {
-		fmt.Println("Nomor tidak valid.")
+	// Insertion sort
+	for i := 1; i < len(daftarPakaian); i++ {
+		key := daftarPakaian[i]
+		j := i - 1
+		for j >= 0 && strings.ToLower(daftarPakaian[j].Nama) > strings.ToLower(key.Nama) {
+			daftarPakaian[j+1] = daftarPakaian[j]
+			j--
+		}
+		daftarPakaian[j+1] = key
+	}
+
+	// Binary search
+	low, high := 0, len(daftarPakaian)-1
+	idx := -1
+	for low <= high {
+		mid := (low + high) / 2
+		namaMid := strings.ToLower(daftarPakaian[mid].Nama)
+		if namaMid == namaCari {
+			idx = mid
+			break
+		} else if namaMid < namaCari {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+
+	if idx == -1 {
+		fmt.Println("Pakaian tidak ditemukan.")
 		fmt.Println("\nTekan enter untuk selanjutnya...")
 		bufio.NewScanner(os.Stdin).Scan()
 		return
 	}
 
-	daftarPakaian = append(daftarPakaian[:index], daftarPakaian[index+1:]...)
+	daftarPakaian = append(daftarPakaian[:idx], daftarPakaian[idx+1:]...)
 	fmt.Println("Data pakaian berhasil dihapus.")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	bufio.NewScanner(os.Stdin).Scan()
@@ -307,6 +345,7 @@ func tambahOutfit(scanner *bufio.Scanner) {
 }
 
 func cekNamaPakaian(nama string) bool {
+	//Sequential Search
 	for i := 0; i < len(daftarPakaian); i++ {
 		if strings.EqualFold(daftarPakaian[i].Nama, nama) {
 			return true
@@ -315,15 +354,26 @@ func cekNamaPakaian(nama string) bool {
 	return false
 }
 
-func cariBinary(scanner *bufio.Scanner) {
-	sort.Slice(daftarPakaian, func(i, j int) bool {
-		return strings.ToLower(daftarPakaian[i].Nama) < strings.ToLower(daftarPakaian[j].Nama)
-	})
+func cariPakaian(scanner *bufio.Scanner) {
+	//selection sort
+	n := len(daftarPakaian)
+	for i := 0; i < n-1; i++ {
+		minIdx := i
+		for j := i + 1; j < n; j++ {
+			if strings.ToLower(daftarPakaian[j].Warna) < strings.ToLower(daftarPakaian[minIdx].Warna) {
+				minIdx = j
+			}
+		}
+		if minIdx != i {
+			daftarPakaian[i], daftarPakaian[minIdx] = daftarPakaian[minIdx], daftarPakaian[i]
+		}
+	}
 
 	fmt.Print("Masukkan nama pakaian yang dicari: ")
 	scanner.Scan()
 	cari := strings.ToLower(scanner.Text())
 
+	//Binary Search
 	low := 0
 	high := len(daftarPakaian) - 1
 	found := false
@@ -359,6 +409,7 @@ func cariBinary(scanner *bufio.Scanner) {
 }
 
 func urutkanTanggal() {
+	//Insertion Sort
 	for i := 1; i < len(daftarPakaian); i++ {
 		key := daftarPakaian[i]
 		j := i - 1
@@ -437,4 +488,47 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
+}
+
+func urutkanOutfitFormalitas() {
+	clearScreen()
+	fmt.Println("╔════════════════════════════════════════════════════════════════════════════╗")
+	fmt.Println("║         URUTAN OUTFIT BERDASARKAN FORMALITAS (SELECTION SORT)              ║")
+	fmt.Println("╚════════════════════════════════════════════════════════════════════════════╝")
+
+	n := len(daftarOutfit)
+	formalitasOutfit := make([]float64, n)
+	for i, o := range daftarOutfit {
+		total := 0
+		count := 0
+		for _, nama := range o.DaftarPakaian {
+			for _, p := range daftarPakaian {
+				if strings.EqualFold(p.Nama, nama) {
+					total += p.Formalitas
+					count++
+					break
+				}
+			}
+		}
+		if count > 0 {
+			formalitasOutfit[i] = float64(total) / float64(count)
+		} else {
+			formalitasOutfit[i] = 0
+		}
+	}
+	// Selection sort dari formalitas tertinggi ke terendah
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < n; j++ {
+			if formalitasOutfit[j] > formalitasOutfit[maxIdx] {
+				maxIdx = j
+			}
+		}
+		if maxIdx != i {
+			daftarOutfit[i], daftarOutfit[maxIdx] = daftarOutfit[maxIdx], daftarOutfit[i]
+			formalitasOutfit[i], formalitasOutfit[maxIdx] = formalitasOutfit[maxIdx], formalitasOutfit[i]
+		}
+	}
+	fmt.Println("Daftar outfit berhasil diurutkan berdasarkan formalitas (tinggi ke rendah).")
+	tampilkanOutfit()
 }
