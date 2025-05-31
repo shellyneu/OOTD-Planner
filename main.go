@@ -174,16 +174,55 @@ func tambahPakaian(scanner *bufio.Scanner) {
 	scanner.Scan()
 	p.Nama = scanner.Text()
 
-	fmt.Print("➤ Kategori: ")
-	scanner.Scan()
-	p.Kategori = scanner.Text()
+	for {
+		fmt.Print("➤ Kategori: ")
+		scanner.Scan()
+		input := scanner.Text()
+		isAngka := true
+		for i := 0; i < len(input); i++ {
+			if input[i] < '0' || input[i] > '9' {
+				isAngka = false
+				break
+			}
+		}
+		if isAngka || len(input) == 0 {
+			fmt.Println("Kategori tidak boleh berupa angka atau kosong.")
+			continue
+		}
+		p.Kategori = input
+		break
+	}
 
-	fmt.Print("➤ Warna: ")
-	scanner.Scan()
-	p.Warna = scanner.Text()
+	for {
+		fmt.Print("➤ Warna: ")
+		scanner.Scan()
+		input := scanner.Text()
+		isAngka := true
+		for i := 0; i < len(input); i++ {
+			if input[i] < '0' || input[i] > '9' {
+				isAngka = false
+				break
+			}
+		}
+		if isAngka || len(input) == 0 {
+			fmt.Println("Warna tidak boleh berupa angka atau kosong.")
+			continue
+		}
+		p.Warna = input
+		break
+	}
 
-	fmt.Print("➤ Formalitas (1-10): ")
-	fmt.Scanln(&p.Formalitas)
+	for {
+		fmt.Print("➤ Formalitas (1-10): ")
+		var formalitas int
+		fmt.Scanln(&formalitas)
+		if formalitas < 1 || formalitas > 10 {
+			fmt.Println("Nilai formalitas harus antara 1 sampai 10.")
+			continue
+		}
+		p.Formalitas = formalitas
+		break
+	}
 
 	fmt.Print("➤ Tanggal terakhir dipakai (YYYY-MM-DD): ")
 	scanner.Scan()
@@ -226,16 +265,56 @@ func editPakaian(scanner *bufio.Scanner) {
 	scanner.Scan()
 	daftarPakaian[idx].Nama = scanner.Text()
 
-	fmt.Print("➤ Kategori baru: ")
-	scanner.Scan()
-	daftarPakaian[idx].Kategori = scanner.Text()
+	for {
+		fmt.Print("➤ Kategori: ")
+		scanner.Scan()
+		input := scanner.Text()
+		isAngka := true
+		for i := 0; i < len(input); i++ {
+			if input[i] < '0' || input[i] > '9' {
+				isAngka = false
+				break
+			}
+		}
+		if isAngka || len(input) == 0 {
+			fmt.Println("Kategori tidak boleh berupa angka atau kosong.")
+			continue
+		}
+		daftarPakaian[idx].Kategori = input
+		break
+	}
 
-	fmt.Print("➤ Warna baru: ")
-	scanner.Scan()
-	daftarPakaian[idx].Warna = scanner.Text()
+	for {
+		fmt.Print("➤ Warna: ")
+		scanner.Scan()
+		input := scanner.Text()
+		isAngka := true
+		for i := 0; i < len(input); i++ {
+			if input[i] < '0' || input[i] > '9' {
+				isAngka = false
+				break
+			}
+		}
+		if isAngka || len(input) == 0 {
+			fmt.Println("Warna tidak boleh berupa angka atau kosong.")
+			continue
+		}
+		daftarPakaian[idx].Warna = input
+		break
+	}
 
-	fmt.Print("➤ Formalitas baru (1-10): ")
-	fmt.Scanln(&daftarPakaian[idx].Formalitas)
+	for {
+		fmt.Print("➤ Formalitas baru (1-10): ")
+		var formalitas int
+		fmt.Scanln(&formalitas)
+		if formalitas < 1 || formalitas > 10 {
+			fmt.Println("Nilai formalitas harus antara 1 sampai 10.")
+			scanner.Scan()
+			continue
+		}
+		daftarPakaian[idx].Formalitas = formalitas
+		break
+	}
 
 	fmt.Print("➤ Tanggal terakhir dipakai (YYYY-MM-DD): ")
 	scanner.Scan()
@@ -345,9 +424,9 @@ func tambahOutfit(scanner *bufio.Scanner) {
 }
 
 func cekNamaPakaian(nama string) bool {
-	//Sequential Search
+	nama = strings.ToLower(nama)
 	for i := 0; i < len(daftarPakaian); i++ {
-		if daftarPakaian[i].Nama == nama {
+		if strings.ToLower(daftarPakaian[i].Nama) == nama {
 			return true
 		}
 	}
@@ -355,12 +434,12 @@ func cekNamaPakaian(nama string) bool {
 }
 
 func cariPakaian(scanner *bufio.Scanner) {
-	//selection sort
+	// Selection sort
 	n := len(daftarPakaian)
 	for i := 0; i < n-1; i++ {
 		minIdx := i
 		for j := i + 1; j < n; j++ {
-			if strings.ToLower(daftarPakaian[j].Warna) < strings.ToLower(daftarPakaian[minIdx].Warna) {
+			if strings.ToLower(daftarPakaian[j].Nama) < strings.ToLower(daftarPakaian[minIdx].Nama) {
 				minIdx = j
 			}
 		}
@@ -502,7 +581,7 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 	}
 
 	if !found {
-		fmt.Println("│ Tidak ada outfit yang sesuai dengan cuaca tersebut                             │")
+		fmt.Println("│ Tidak ada outfit yang sesuai dengan cuaca tersebut                               │")
 	}
 
 	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
