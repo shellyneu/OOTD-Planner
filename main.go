@@ -44,7 +44,7 @@ func main() {
 		fmt.Println("│ 7. Urutkan Berdasarkan Tanggal     │")
 		fmt.Println("│ 8. Urutkan Berdasarkan Formalitas  │")
 		fmt.Println("│ 9. Lihat Kombinasi OOTD            │")
-		fmt.Println("│ 10. Rekomendasi Berdasarkan Cuaca  │")
+		fmt.Println("│ 10. Rekomendasi Acara / Cuaca      │")
 		fmt.Println("│ 0. Keluar                          │")
 		fmt.Println("└────────────────────────────────────┘")
 		fmt.Print("➤ Pilih menu: ")
@@ -71,7 +71,7 @@ func main() {
 		case "9":
 			tampilkanOutfit()
 		case "10":
-			rekomendasiCuaca(scanner)
+			rekomendasi(scanner)
 		case "0":
 			fmt.Println("Keluar dari program.")
 			return
@@ -79,11 +79,6 @@ func main() {
 			fmt.Println("Pilihan tidak valid.")
 		}
 	}
-}
-
-func parseTanggal(tanggal string, layout string) time.Time {
-	t, _ := time.Parse(layout, tanggal)
-	return t
 }
 
 func dataDummy() {
@@ -128,10 +123,6 @@ func dataDummy() {
 	}
 }
 
-func clearScreen() {
-	fmt.Print("\033[H\033[2J")
-}
-
 func tampilkanPakaian() {
 	clearScreen()
 	fmt.Println("╔════════════════════════════════════════════════════════════════════════╗")
@@ -152,13 +143,6 @@ func tampilkanPakaian() {
 	fmt.Println("╚═════╩══════════════════╩═══════════╩════════╩═══════════╩══════════════╝")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	bufio.NewScanner(os.Stdin).Scan()
-}
-
-func batasiPanjang(text string, panjang int) string {
-	if len(text) > panjang {
-		return text[:panjang-3] + "..."
-	}
-	return text
 }
 
 func tambahPakaian(scanner *bufio.Scanner) {
@@ -423,16 +407,6 @@ func tambahOutfit(scanner *bufio.Scanner) {
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
-func cekNamaPakaian(nama string) bool {
-	nama = strings.ToLower(nama)
-	for i := 0; i < len(daftarPakaian); i++ {
-		if strings.ToLower(daftarPakaian[i].Nama) == nama {
-			return true
-		}
-	}
-	return false
-}
-
 func cariPakaian(scanner *bufio.Scanner) {
 	// Selection sort
 	n := len(daftarPakaian)
@@ -544,13 +518,13 @@ func tampilkanOutfit() {
 	bufio.NewScanner(os.Stdin).Scan()
 }
 
-func rekomendasiCuaca(scanner *bufio.Scanner) {
+func rekomendasi(scanner *bufio.Scanner) {
 	clearScreen()
 	fmt.Println("╔════════════════════════════════════════╗")
 	fmt.Println("║        REKOMENDASI BERDASARKAN         ║")
-	fmt.Println("║               CUACA                    ║")
+	fmt.Println("║            CUACA / ACARA               ║")
 	fmt.Println("╚════════════════════════════════════════╝")
-	fmt.Print("\n➤ Masukkan kondisi cuaca (cerah/hujan/dingin): ")
+	fmt.Print("\n➤ Masukkan kondisi cuaca/acara: ")
 	scanner.Scan()
 	kondisi := strings.ToLower(scanner.Text())
 
@@ -579,10 +553,37 @@ func rekomendasiCuaca(scanner *bufio.Scanner) {
 	}
 
 	if !found {
-		fmt.Println("│ Tidak ada outfit yang sesuai dengan cuaca tersebut                               │")
+		fmt.Println("│ Tidak ada outfit yang sesuai dengan acara/cuaca tersebut                               │")
 	}
 
 	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
 	bufio.NewScanner(os.Stdin).Scan()
+}
+
+func parseTanggal(tanggal string, layout string) time.Time {
+	t, _ := time.Parse(layout, tanggal)
+	return t
+}
+
+
+func clearScreen() {
+	fmt.Print("\033[H\033[2J")
+}
+
+func cekNamaPakaian(nama string) bool {
+	nama = strings.ToLower(nama)
+	for i := 0; i < len(daftarPakaian); i++ {
+		if strings.ToLower(daftarPakaian[i].Nama) == nama {
+			return true
+		}
+	}
+	return false
+}
+
+func batasiPanjang(text string, panjang int) string {
+	if len(text) > panjang {
+		return text[:panjang-3] + "..."
+	}
+	return text
 }
