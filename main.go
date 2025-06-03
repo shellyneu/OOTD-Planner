@@ -514,8 +514,6 @@ func urutkanFormalitas() {
 		}
 		// Tukar nilai formalitas
 		daftarPakaian[i].Formalitas, daftarPakaian[maxIdx].Formalitas = daftarPakaian[maxIdx].Formalitas, daftarPakaian[i].Formalitas
-		// Tukar outfit juga agar sesuai urutan
-		daftarOutfit[i], daftarOutfit[maxIdx] = daftarOutfit[maxIdx], daftarOutfit[i]
 	}
 	fmt.Println("Data diurutkan berdasarkan formalitas (dari tetringgi ke terendah).")
 	tampilkanPakaian()
