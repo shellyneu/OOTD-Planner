@@ -144,7 +144,6 @@ func tampilkanPakaian() {
 	fmt.Println("╚═════╩══════════════════╩═══════════╩════════╩═══════════╩══════════════╝")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	fmt.Scanln()
-	fmt.Scanln()
 }
 
 func tambahPakaian(scanner *bufio.Scanner) {
@@ -221,7 +220,6 @@ func tambahPakaian(scanner *bufio.Scanner) {
 	fmt.Println("└────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	fmt.Scanln()
-	fmt.Scanln()
 }
 
 func editPakaian(scanner *bufio.Scanner) {
@@ -242,7 +240,6 @@ func editPakaian(scanner *bufio.Scanner) {
 	if idx == -1 {
 		fmt.Println("Pakaian tidak ditemukan.")
 		fmt.Println("\nTekan enter untuk selanjutnya...")
-		fmt.Scanln()
 		fmt.Scanln()
 		return
 	}
@@ -313,7 +310,6 @@ func editPakaian(scanner *bufio.Scanner) {
 	fmt.Println("└────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
 	fmt.Scanln()
-	fmt.Scanln()
 }
 
 func hapusPakaian(scanner *bufio.Scanner) {
@@ -352,14 +348,13 @@ func hapusPakaian(scanner *bufio.Scanner) {
 	if idx == -1 {
 		fmt.Println("Pakaian tidak ditemukan.")
 		fmt.Println("\nTekan enter untuk selanjutnya...")
-		bufio.NewScanner(os.Stdin).Scan()
+		fmt.Scanln()
 		return
 	}
 
 	daftarPakaian = append(daftarPakaian[:idx], daftarPakaian[idx+1:]...)
 	fmt.Println("Data pakaian berhasil dihapus.")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
-	fmt.Scanln()
 	fmt.Scanln()
 }
 
@@ -399,7 +394,7 @@ func tambahOutfit(scanner *bufio.Scanner) {
 	if !valid {
 		fmt.Println("Gagal menambahkan kombinasi karena ada nama pakaian yang tidak valid.")
 		fmt.Println("\nTekan enter untuk kembali...")
-		bufio.NewScanner(os.Stdin).Scan()
+		fmt.Scanln()
 		return
 	}
 
@@ -410,7 +405,6 @@ func tambahOutfit(scanner *bufio.Scanner) {
 	fmt.Println("│   Outfit berhasil ditambah!    │")
 	fmt.Println("└────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk selanjutnya...")
-	fmt.Scanln()
 	fmt.Scanln()
 }
 
@@ -453,7 +447,6 @@ func cariPakaian(scanner *bufio.Scanner) {
 			found = true
 			fmt.Println("\nTekan enter untuk selanjutnya...")
 			fmt.Scanln()
-			fmt.Scanln()
 			break
 		} else if namaMid < cari {
 			low = mid + 1
@@ -465,7 +458,7 @@ func cariPakaian(scanner *bufio.Scanner) {
 	if !found {
 		fmt.Println("Pakaian tidak ditemukan.")
 		fmt.Println("\nTekan enter untuk selanjutnya...")
-		bufio.NewScanner(os.Stdin).Scan()
+		fmt.Scanln()
 	}
 }
 
@@ -495,7 +488,8 @@ func urutkanFormalitas() {
 			}
 		}
 		// Tukar nilai formalitas
-		daftarPakaian[i].Formalitas, daftarPakaian[maxIdx].Formalitas = daftarPakaian[maxIdx].Formalitas, daftarPakaian[i].Formalitas
+		daftarPakaian[i].Formalitas, daftarPakaian[maxIdx].Formalitas = 
+		daftarPakaian[maxIdx].Formalitas, daftarPakaian[i].Formalitas
 	}
 	fmt.Println("Data diurutkan berdasarkan formalitas (dari tetringgi ke terendah).")
 	tampilkanPakaian()
@@ -524,7 +518,6 @@ func tampilkanOutfit() {
 	fmt.Println("╚════════╩════════════════════════════════════════════╩════════════════════════════╩════════════════════════════════════════════════════════════════════════════════════╝")
 	fmt.Println("\nTekan enter untuk kembali...")
 	fmt.Scanln()
-	fmt.Scanln()
 }
 
 func rekomendasi(scanner *bufio.Scanner) {
@@ -541,7 +534,7 @@ func rekomendasi(scanner *bufio.Scanner) {
 	fmt.Println("│        Nama Kombinasi         │                 Daftar Pakaian                   │")
 	fmt.Println("├───────────────────────────────┼──────────────────────────────────────────────────┤")
 
-	found := false
+	idx := -1
 	for i := 0; i < len(daftarOutfit); i++ {
 		outfit := daftarOutfit[i]
 
@@ -557,17 +550,16 @@ func rekomendasi(scanner *bufio.Scanner) {
 			}
 
 			fmt.Printf("│ %-29s │ %-48s │\n", nama, pakaian)
-			found = true
+			idx = 1
 		}
 	}
 
-	if !found {
+	if idx == -1 {
 		fmt.Println("│ Tidak ada outfit yang sesuai dengan acara/cuaca tersebut                               │")
 	}
 
 	fmt.Println("└───────────────────────────────┴──────────────────────────────────────────────────┘")
 	fmt.Println("\nTekan enter untuk kembali...")
-	fmt.Scanln()
 	fmt.Scanln()
 }
 
